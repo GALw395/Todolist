@@ -1,10 +1,10 @@
 import './App.css';
-import { Todolist } from './Todolist';
+import { Todolist, TaskType } from './Todolist';
 
 
 
 function App() {
-    const tasks1 = [
+    const tasks1: TaskType[] = [
         { id: 1, title: 'HTML&CSS', isDone: true },
         { id: 2, title: 'JS', isDone: true },
         { id: 3, title: 'ReactJS', isDone: false },
@@ -13,7 +13,7 @@ function App() {
         { id: 6, title: 'RTK query', isDone: true },
     ]
 
-    const tasks2 = []
+    const tasks2: TaskType[] = []
 
     return (
         <div className="App">
