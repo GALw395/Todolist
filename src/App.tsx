@@ -13,11 +13,7 @@ function App() {
         { id: 6, title: 'RTK query', isDone: true },
     ]
 
-    const tasks2 = [
-        { id: 1, title: 'Hello world', isDone: true },
-        { id: 2, title: 'I am Happy', isDone: false },
-        { id: 3, title: 'Yo', isDone: false },
-    ]
+    const tasks2 = []
 
     return (
         <div className="App">
