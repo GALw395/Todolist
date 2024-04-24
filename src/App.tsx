@@ -25,34 +25,43 @@ function App() {
         { id: v1(), title: 'Typescript', isDone: false },
         { id: v1(), title: 'RTK query', isDone: true },
     ])
-    
+
 
     let [filter, setFilter] = useState<FilteredValueType>('All')
 
-    
+
     function removeTask(id: string) {
         let filteredTasks = tasks.filter(el => el.id !== id)
         setTasks(filteredTasks)
     }
 
     function addTask(title: string) {
-        let newTask = {id: v1(), title: title, isDone: false}
+        let newTask = { id: v1(), title: title, isDone: false }
         let newTasks = [newTask, ...tasks]
         setTasks(newTasks)
 
 
     }
 
-    function changeFilter (value: FilteredValueType) {
+    function changeStatus(taskId: string, isDone: boolean) {
+        let task = tasks.find(t => t.id === taskId)
+        if (task) {
+            task.isDone = isDone
+        }
+        setTasks([...tasks])
+
+    }
+
+    function changeFilter(value: FilteredValueType) {
         setFilter(value)
     }
 
     let tasksForTodolist = tasks
     if (filter === 'Active') {
-        tasksForTodolist = tasks.filter( el => el.isDone === false )
+        tasksForTodolist = tasks.filter(el => el.isDone === false)
     }
     if (filter === 'Completed') {
-        tasksForTodolist = tasks.filter( el => el.isDone === true )
+        tasksForTodolist = tasks.filter(el => el.isDone === true)
     }
 
 
@@ -62,9 +71,13 @@ function App() {
                 title="What to learn"
                 tasks={tasksForTodolist}
                 removeTask={removeTask}
-                changeFilter={changeFilter} 
-                addTask={addTask}/>
-                
+                changeFilter={changeFilter}
+                addTask={addTask}
+                changeTaskStatus={changeStatus}
+                filter={filter}
+            />
+
+
         </div>
     )
 }
