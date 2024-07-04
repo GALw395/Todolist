@@ -1,7 +1,10 @@
-import { ChangeEvent } from "react"
 import { FilteredValueType } from "./App"
 import { AddItemForm } from "./AddItemForm"
 import { EditableSpan } from "./EditableSpan"
+import { IconButton } from "@mui/material"
+import Button from "@mui/material/Button"
+import { Delete } from "@mui/icons-material"
+import { SuperCheckbox } from "./SuperCheckbox"
 
 export type TaskType = {
   id: string
@@ -9,7 +12,7 @@ export type TaskType = {
   isDone: boolean
 }
 
-type PropsType = {
+export type PropsType = {
   id: string
   title: string
   tasks: TaskType[]
@@ -20,7 +23,7 @@ type PropsType = {
   filter: FilteredValueType
   removeTodolist: (todolistId: string) => void
   changeTaskTitle: (taskId: string, newTitle: string, todolistId: string) => void
-  changeTodolistTitle: (id: string, newTitle: string)=>void
+  changeTodolistTitle: (id: string, newTitle: string) => void
 }
 
 export const Todolist = (props: PropsType) => {
@@ -30,9 +33,12 @@ export const Todolist = (props: PropsType) => {
   const onCompletedClickHandler = () => props.changeFilter('Completed', props.id)
   const removeTodoListButton = () => props.removeTodolist(props.id)
   const addTask = (title: string) => props.addTask(title, props.id)
-
   const changeTodolistTitle = (newTitle: string) => {
-      props.changeTodolistTitle(props.id, newTitle)
+    props.changeTodolistTitle(props.id, newTitle)
+  }
+
+  const changeTaskStatusHandler = (tID: string, checked: boolean) => {
+      props.changeTaskStatus(tID,checked, props.id )
   }
 
   return (
@@ -40,7 +46,9 @@ export const Todolist = (props: PropsType) => {
 
       <h3>
         <EditableSpan onChange={changeTodolistTitle} title={props.title} />
-        <button onClick={removeTodoListButton}>x</button>
+        <IconButton onClick={removeTodoListButton}>
+          <Delete />
+        </IconButton>
       </h3>
 
       <AddItemForm addItem={addTask} />
@@ -48,34 +56,33 @@ export const Todolist = (props: PropsType) => {
       {props.tasks.length === 0 ? (
         <p>Тасок нет</p>
       ) : (
-        <ul>
+        <div>
           {props.tasks.map(el => {
 
             const onRemoveHandler = () => props.removeTask(el.id, props.id)
-            const onChangeStatusHandler = (e: ChangeEvent<HTMLInputElement>) => {
-              props.changeTaskStatus(el.id, e.currentTarget.checked, props.id)
-            }
 
             const onChangeTitleHandler = (newValue: string) => {
               props.changeTaskTitle(el.id, newValue, props.id)
             }
 
-            return <li key={el.id} className={el.isDone ? 'is-done' : ''}>
-              <input
-                type="checkbox"
-                onChange={onChangeStatusHandler}
-                checked={el.isDone} />
+            return <div key={el.id} className={el.isDone ? 'is-done' : ''}>
+              <SuperCheckbox
+                checked={el.isDone}
+                callBack={(checked)=>changeTaskStatusHandler(el.id, checked)}
+              />
               <EditableSpan title={el.title} onChange={onChangeTitleHandler} />
-              <button onClick={onRemoveHandler}>x</button>
-            </li>
+              <IconButton onClick={onRemoveHandler}>
+                <Delete />
+              </IconButton>
+            </div>
           }
           )}
-        </ul>
+        </div>
       )}
       <div>
-        <button className={props.filter === 'All' ? "active-filter" : ''} onClick={onAllClickHandler}>All</button>
-        <button className={props.filter === 'Active' ? "active-filter" : ''} onClick={onActiveClickHandler}>Active</button>
-        <button className={props.filter === 'Completed' ? "active-filter" : ''} onClick={onCompletedClickHandler}>Completed</button>
+        <Button variant={props.filter === 'All' ? "contained" : 'text'} onClick={onAllClickHandler}>All</Button>
+        <Button color={"primary"} variant={props.filter === 'Active' ? "contained" : 'text'} onClick={onActiveClickHandler}>Active</Button>
+        <Button color={"secondary"} variant={props.filter === 'Completed' ? "contained" : 'text'} onClick={onCompletedClickHandler}>Completed</Button>
       </div>
     </div>
   )
