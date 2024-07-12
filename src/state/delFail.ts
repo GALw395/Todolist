@@ -1,7 +1,7 @@
 import { v1 } from "uuid";
 import { TasksStateType, TodoListsPropsType } from "../App";
 import { addTodolistAC, changeTodolistFilterAC, changeTodolistTitleAC, removeTodolistAC, todolistsReducer } from "./todolists-reducer";
-import { addTasksAC, changeTasksStatusAC, changeTasksTitleAC, removeTaskstAC, tasksReducer } from "./tasks-reducer";
+import { addTasksAC, changeTasksStatusAC, changeTasksTitleAC, removeTasksAC, tasksReducer } from "./tasks-reducer";
 
 let todolistId1 = v1()
 let todolistId2 = v1()
@@ -36,7 +36,7 @@ const startStateTASKS: TasksStateType = {
 }
 
 
-const endStateTasksCase1 = tasksReducer(startStateTASKS, removeTaskstAC("1", todolistId1))
+const endStateTasksCase1 = tasksReducer(startStateTASKS, removeTasksAC("1", todolistId1))
 const endStateTasksCase2 = tasksReducer(startStateTASKS, addTasksAC( 'newTask', todolistId1))
 const endStateTasksCase3 = tasksReducer(startStateTASKS, changeTasksTitleAC('2', 'newTitle', todolistId2))
 const endStateTasksCase4 = tasksReducer(startStateTASKS, changeTasksStatusAC("3", true, todolistId2))

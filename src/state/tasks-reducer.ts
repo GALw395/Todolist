@@ -1,9 +1,9 @@
 import { v1 } from "uuid"
 import { TasksStateType } from "../App"
-import { AddTodolistActionType, RemoveTodolistActionType } from "./todolists-reducer"
+import { AddTodolistActionType, RemoveTodolistActionType, todoListId1, todoListId2 } from "./todolists-reducer"
 
 
-export type RemoveTasksActionType = ReturnType<typeof removeTaskstAC>
+export type RemoveTasksActionType = ReturnType<typeof removeTasksAC>
 
 export type AddTasksActionType = ReturnType<typeof addTasksAC>
 
@@ -19,31 +19,33 @@ type ActionsType = RemoveTasksActionType
     | AddTodolistActionType
     | RemoveTodolistActionType
 
-export const tasksReducer = (state: TasksStateType, action: ActionsType): TasksStateType => {
+
+const initialState: TasksStateType = {
+    [todoListId1]: [
+        { id: v1(), title: 'HTML&CSS', isDone: true },
+        { id: v1(), title: 'JS', isDone: true },
+        { id: v1(), title: 'ReactJS', isDone: false },
+        { id: v1(), title: 'Redux', isDone: true },
+        { id: v1(), title: 'Typescript', isDone: false },
+        { id: v1(), title: 'RTK query', isDone: true },
+    ],
+    [todoListId2]: [
+        { id: v1(), title: 'Milk', isDone: true },
+        { id: v1(), title: 'Book', isDone: true },
+        { id: v1(), title: 'Apple', isDone: false },
+    ]
+}
+
+export const tasksReducer = (state: TasksStateType = initialState, action: ActionsType): TasksStateType => {
     switch (action.type) {
         case 'REMOVE-TASK': {
-            // let tasks = state[action.payload.todolistId]
-            // let filteredTasks = tasks.filter(el => el.id !== action.payload.id)
-            // state[action.payload.todolistId] = filteredTasks
-            // return { ...state }
             return { ...state, [action.payload.todolistId]: state[action.payload.todolistId].filter(el => el.id !== action.payload.id) }
         }
         case 'ADD-TASK': {
-            // let newTask = { id: v1(), title: action.payload.title, isDone: false }          
-            // let tasks = state[action.payload.todolistId]
-            // let newTasks = [newTask, ...tasks]
-            // state[action.payload.todolistId] = newTasks
-            // return { ...state }
             let newTask = { id: v1(), title: action.payload.title, isDone: false }
             return { ...state, [action.payload.todolistId]: [newTask, ...state[action.payload.todolistId]] }
         }
         case 'CHANGE-TASK-TITLE': {
-            // let tasks = state[action.payload.todolistId]
-            // let task = tasks.find(t => t.id === action.payload.taskId)
-            // if (task) {
-            //     task.title = action.payload.newTitle
-            // }
-            // return { ...state }
             return {
                 ...state,
                 [action.payload.todolistId]: state[action.payload.todolistId].map(
@@ -52,10 +54,6 @@ export const tasksReducer = (state: TasksStateType, action: ActionsType): TasksS
             }
         }
         case 'CHANGE-TASK-STATUS': {
-            // let tasks = state[action.payload.todolistId]
-            // let task = tasks.find(t => t.id === action.payload.taskId)
-            // if (task) {task.isDone = action.payload.isDone}
-            // return { ...state }
             return {
                 ...state,
                 [action.payload.todolistId]:
@@ -68,9 +66,7 @@ export const tasksReducer = (state: TasksStateType, action: ActionsType): TasksS
             return { ...state, [action.payload.todolistId]: [] }
         }
         case 'REMOVE-TODOLIST': {
-            // let { [action.payload.todolistId] : [], ...rest } = state  
-            // return rest                        //другой вариант удаления из массива объект по ключу с помощью диструктуризации
-            let copyState = {...state}
+            let copyState = { ...state }
             delete copyState[action.payload.todolistId]
             return copyState
         }
@@ -78,7 +74,7 @@ export const tasksReducer = (state: TasksStateType, action: ActionsType): TasksS
             return state
     }
 }
-export const removeTaskstAC = (id: string, todolistId: string) => {
+export const removeTasksAC = (id: string, todolistId: string) => {
     return { type: 'REMOVE-TASK', payload: { id, todolistId } } as const
 }
 
