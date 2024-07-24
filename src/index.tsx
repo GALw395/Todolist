@@ -12,13 +12,13 @@ const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
-  <React.StrictMode>
+  // <React.StrictMode>   //чтобы небыло двой отрисовки в режиме разработки
     <Provider store={store}>
       <AppWithRedux />
     </Provider>    
-    {/* <AppWithReducers /> */}
-    {/* <App /> */}
-  </React.StrictMode>
+    // {/* <AppWithReducers /> */}
+    // {/* <App /> */}
+  // </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function
