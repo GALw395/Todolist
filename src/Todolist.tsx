@@ -4,7 +4,6 @@ import { EditableSpan } from "./EditableSpan"
 import { IconButton } from "@mui/material"
 import Button from "@mui/material/Button"
 import { Delete } from "@mui/icons-material"
-import { SuperCheckbox } from "./SuperCheckbox"
 import { memo, useCallback } from "react"
 import { Task } from "./Task"
 
@@ -30,7 +29,6 @@ export type PropsType = {
 
 export const Todolist = memo((props: PropsType) => {
 
-
   const addTask = useCallback((title: string) => props.addTask(title, props.id), [props.addTask, props.id])
 
   const removeTodoListButton = () => props.removeTodolist(props.id)
@@ -38,10 +36,6 @@ export const Todolist = memo((props: PropsType) => {
   const changeTodolistTitle = useCallback((newTitle: string) => {
     props.changeTodolistTitle(props.id, newTitle)
   }, [props.changeTodolistTitle, props.id])
-
-  // const changeTaskStatusHandler = (tID: string, checked: boolean) => {
-  //   props.changeTaskStatus(tID, checked, props.id)
-  // }
 
   const onAllClickHandler = useCallback(() => props.changeFilter('All', props.id), [props.changeFilter, props.id])
   const onActiveClickHandler = useCallback(() => props.changeFilter('Active', props.id), [props.changeFilter, props.id])
@@ -67,12 +61,12 @@ export const Todolist = memo((props: PropsType) => {
 
       <AddItemForm addItem={addTask} />
 
-      {props.tasks.length === 0 ? (
+      {tasksForTodolist.length === 0 ? ( //тутачки изменил props.tasks на tasksForTodolist
         <p>Тасок нет</p>
       ) : (
         <div>
-          {props.tasks.map(el => <Task
-            changeTaskStatus={props.changeTaskStatus}
+          {tasksForTodolist.map(el => <Task         // b тутачки изменил props.tasks на tasksForTodolist
+            changeTaskStatus={props.changeTaskStatus} 
             changeTaskTitle={props.changeTaskTitle}
             el={el}
             removeTask={props.removeTask}

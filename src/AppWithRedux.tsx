@@ -23,7 +23,7 @@ export type TasksStateType = {
 
 }
 
-function AppWithRedux() {
+function AppWithRedux() {   
 
     const dispatch = useDispatch()
 
@@ -52,7 +52,7 @@ function AppWithRedux() {
     }, [dispatch])
     const changeTodolistTitle = useCallback((id: string, newTitle: string) => {
         dispatch(changeTodolistTitleAC(id, newTitle))
-    }, [dispatch])
+    }, [dispatch])    
     const addTodolist = useCallback((title: string) => {
         dispatch(addTodolistAC(title))
     }, [dispatch])
